@@ -41,6 +41,9 @@ if(fs.existsSync('./ejemplo.txt')) {
     fs.unlinkSync('./ejemplo.txt') //Eliminar fichero
 }
 */
+/*
+
+//Con callbacks
 
 const fs = require('fs')
 
@@ -66,4 +69,28 @@ fs.writeFile('./ejemplo.txt', "Hola, buenas tardes",  (error) => {
             
         })
     })
-})
+})*/
+
+//Con promesas
+
+import {promises as fs} from 'fs'
+
+const persona1 = {
+    nombre: "Fran",
+    apellido: "Pugh"
+}
+
+const consultasTXT = async () => {
+    await fs.writeFile('./ejemplo.txt', "Hola, buenas noches")
+    let resultado = await fs.readFile('./ejemplo.txt', 'utf-8')
+    console.log(resultado)
+    await fs.appendFile('./ejemplo.txt', JSON.stringify(persona1))
+    resultado = await fs.readFile('./ejemplo.txt', 'utf-8')
+    console.log(resultado)
+    //await fs.unlink('./ejemplo.txt')
+}
+
+consultasTXT()
+
+
+
