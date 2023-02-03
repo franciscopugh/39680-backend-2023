@@ -4,8 +4,8 @@ const productManager = new ProductManager('src/models/productos.txt')
 const routerProd = Router()
 
 routerProd.get('/', async (req, res) => { 
-    const { category } = req.query; 
-    console.log(category)
+    const { limit } = req.query; 
+    console.log(limit)
     const productos = await productManager.getProducts()
     console.log(productos)
     res.send(JSON.stringify(productos))
