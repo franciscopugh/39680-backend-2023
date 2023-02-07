@@ -1,0 +1,1 @@
+[{"nombre":"Arroz","marca":"Arrocin","precio":600,"stock":25,"id":1},{"title":"Arroz","description":"Ricos","price":500,"thumbnail":"","code":134,"stock":24,"id":2}]
