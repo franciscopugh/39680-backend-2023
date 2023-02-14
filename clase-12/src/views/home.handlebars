@@ -1,0 +1,16 @@
+<div>
+    <h1>Hola {{mensaje}}</h1>
+    {{> contador}}
+   <p>Hola, {{user.nombre}}</p>  
+   {{#if isTutor}}
+        {{#each cursos}}
+            <div>
+                <p>{{this.numComision}}</p>
+                <p>{{this.dias}}</p>
+                <p>{{this.horario}}</p>
+            </div>
+        {{/each}}
+    {{else}}
+        <p>No sos tutor</p>
+    {{/if}}
+</div>
