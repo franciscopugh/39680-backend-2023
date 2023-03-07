@@ -1,0 +1,1 @@
+[{"id":2,"nombre":"Lenteja","marca":"Lentejin"},{"id":3,"nombre":"Arroz","marca":"Arrocin"}]
