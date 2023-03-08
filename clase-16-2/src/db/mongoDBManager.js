@@ -13,7 +13,6 @@ export class ManagerMongoDB {
     async #setConnection() {
         try {
             await mongoose.connect(this.#url)
-            console.log("DB is connected")
         } catch (error) {
             return error
         }
