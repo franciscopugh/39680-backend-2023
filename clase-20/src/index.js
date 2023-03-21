@@ -2,22 +2,24 @@ import 'dotenv/config'
 import express from 'express'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
-//import FileStore from 'session-file-store'
 import MongoStore from 'connect-mongo'
+import multer from 'multer'
+import { engine } from 'express-handlebars'
+import { __dirname } from './path.js'
+import * as path from 'path'
 import routerSession from './routes/session.js'
+import routerProducto from './routes/products.js'
+import routerUser from './routes/user.js'
+import routerCart from './routes/cart.js'
 
 const app = express()
 
-//const fileStorage = FileStore(session)
-
-app.use(cookieParser(process.env.SIGNED_COOKIE)) // Puedo implementar cookies en mi app
+app.use(cookieParser(process.env.SIGNED_COOKIE))
 app.use(express.json())
-console.log(process.env.URL_MONGODB_ATLAS)
+app.use(express.urlencoded({ extended: true }))
 app.use(session({
-    //Lugar guardado   Time to Live    Intentos de lectura
-    //store: new fileStorage({ path: './sessions', ttl: 30000, retries: 1 }),
     store: MongoStore.create({
-        mongoUrl: process.env.URL_MONGODB_ATLAS,
+        mongoUrl: process.env.MONGODBURL,
         mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
         ttl: 30,
     }),
@@ -26,5 +28,26 @@ app.use(session({
     saveUninitialized: true
 }))
 
+app.engine("handlebars", engine())
+app.set("view engine", "handlebars")
+app.set("views", path.resolve(__dirname, "./views"))
+
+app.set("port", process.env.PORT || 5000)
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'src/public/img')
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}${file.originalname}`)
+    }
+})
+
+const upload = multer({ storage: storage })
+
+//Routes
+app.use('/product', routerProducto)
+app.use('/user/', routerUser)
+app.use('/api/cart', routerCart)
 app.use('/api/session', routerSession)
-app.listen(4000, () => console.log("Server on port 4000"))
+const server = app.listen(app.get("port"), () => console.log(`Server on port ${app.get("port")}`))
