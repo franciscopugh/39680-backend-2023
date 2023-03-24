@@ -1,6 +1,3 @@
-import { getUserByEmail } from "./user.controller.js"
-import { validatePassword } from "../utils/bcrypt.js"
-
 export const getSession = (req, res) => {
     if (req.session.login) { //Si la sesion esta activa en la BDD
         res.redirect('/product', 200, {
@@ -14,23 +11,23 @@ export const getSession = (req, res) => {
 }
 
 export const testLogin = async (req, res) => {
-    //Consultar datos del formulario de login
-    const { email, password } = req.body
-    const user = await getUserByEmail(email)
-    console.log(user.password)
+
     try {
-        if (email == user.email && validatePassword(password, user.password)) { //Consultar users en mi BDD
-            //Login correcto
-            req.session.login = true
-            res.redirect('/product', 200)
-        } else {
-            res.redirect("/api/session/login", 500, {
-                //Usuario no encontrado o datos incorrectos
-            })
+        if (!req.user) {
+            return res.status(401).send({ status: "error", error: "Invalidate User" })
+        }
+        //Genero la session de mi usuario
+        req.session.user = {
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            age: req.user.age,
+            email: req.user.email
         }
 
+        res.status(200).send({ status: "success", payload: req.user })
+
     } catch (error) {
-        res.status(500).json({
+        res.status(500).send.json({
             message: error.message
         })
     }
