@@ -1,0 +1,64 @@
+paths:
+  /api/users/:
+    get:
+      summary: "Consultar por todos los usuarios"
+      tags:
+        - Users
+      responses:
+        "200":
+          description: "Usuarios obtenidos"
+          content:
+            application/json:
+              schema: 
+                type: array
+                items:
+                  $ref: '#components/schemas/User'
+        "500":
+          description: "Error del servidor al obtener los usuarios"
+  /api/users/{uid}:
+    get:
+      summary: Obtener un usuario a traves de su id
+      tags:
+        - Users
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: Id del usuario solicitado
+        schema:
+          $type: String
+      responses:
+        "200":
+          description: "Usuario encontrado"
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/User"
+
+components:
+  schemas:
+    User: 
+      type: object
+      properties:
+        _id: 
+          type: ObjectId
+          description: Id autogenerado
+        first_name:
+          type: String
+          description: Nombre del usuario
+        last_name:
+          type: String
+          description: Apellido del usuario
+        email:
+          type: String
+          description: Email del usuario
+        password:
+          type: String
+          description: Contraseña del usuario
+      example:
+        _id: ObjectId("12bb12bb12bb12bb12bb12bb")
+        first_name: Christopher
+        last_name: Castelas
+        email: chris@chris.com
+        password: dapsdkasld,asld,aslñx
+      
